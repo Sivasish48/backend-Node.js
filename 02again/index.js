@@ -2,7 +2,7 @@ const express = require("express")
 
 const app = express()
 
-const port = 3002
+const port = 8000
 
 function calcSum(count){
     sum = 0
@@ -15,13 +15,14 @@ function calcSum(count){
 
 
 function handSum(req,res){
-    let finalSum = calcSum(100)
+    let finalSum = calcSum(1000)
     console.log(finalSum);
 
-    let answer = `The calculated sum is ${finalSum}`
+    let answer = `The calculated sum is ${finalSum}` 
 
      res.send(answer)
 }
+
 
 app.get('/handleSum',handSum)
 
