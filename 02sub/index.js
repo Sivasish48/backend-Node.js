@@ -45,6 +45,47 @@ function handSum(req,res){
 }
 
   app.get('/summ',handSum)
+   
+  //In HTTP (Hypertext Transfer Protocol), POST, PUT, and DELETE including GET are common request methods used to interact with resources on a server:
+  
+  // POST: The POST method is used to submit data to be processed to a specified resource.
+  // The data sent with a POST request is typically in the body of the request. Unlike GET requests, which are often used to retrieve data, POST requests are used to send data to the server to create or update a resource.
+  // Basically used when creating a data
+
+  function createuser(req,res){
+    res.send("hello user")
+  }
+
+  app.post('/user',createuser) // hello user
+
+  // PUT: The PUT method is used to update or replace an existing resource on the server with the data provided in the request.
+  // It sends the entire updated resource representation to the server. 
+
+  function update(req,res){
+    const user= "sam"
+     res.send(`Username is updated to ${user}`)
+  }
+
+   app.put('/putuser',update)  // Username is updated to sam
+
+  //DELETE: The DELETE method is used to remove a resource from the server. 
+  //It instructs the server to delete the specified resource.
+  
+  function deluser(req,res){
+    const deleted = true
+    if(deleted){
+      res.send('user is deleted');
+    }else{
+      res.send('not yet deleted');
+    }
+  }
+
+  app.delete('/deleting',deluser) // user is deleted
+
+  //These HTTP methods are fundamental for performing CRUD (Create, Read, Update, Delete) operations on resources managed by a web server.
+
+  
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
