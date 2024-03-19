@@ -12,8 +12,13 @@ const port = 3001
 
 function middleware1(req,res,next){
     console.log("From the inside middleware"+req.headers.counter);
+    // res.send("It is an error")
     next()
+    // let us say if the next() does thorow an error or not get executed we can send a msg as well
 }
+
+
+
 app.use(middleware1)
 // After the execution of the middleware function then it have the control over the callback theSum
 function sendMsg(req,res){
