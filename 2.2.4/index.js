@@ -51,9 +51,10 @@ app.post("/thecal",handleFReq)
 
   function htmlFun(req,res){
     res.send(`<h1>Hello world</h1>`)
-
+   // we can also send the index.html file directly 
+   // res.sendFile(_dirname+"/index.html")
   }
-app.post('/thehtml',htmlFun)
+app.get('/thehtml',htmlFun)
 
 
 app.listen(port,()=>{
