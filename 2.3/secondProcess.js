@@ -19,4 +19,4 @@ function theclbck(result){
 }
 // now use another external library of node js called fetch and put the route methodObj and keep a callback in the promise for its functionality
 
-fetch("http://localhost:3007/thecal",methodObj).then(theclbck)
+fetch("http://localhost:3005/Sum?count=58667",methodObj).then(theclbck)
