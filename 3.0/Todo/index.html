@@ -16,10 +16,28 @@
         function clbk(response){
             response.json().then(parsedResponse)
         }
+
+        // THIS IS FOR THE GET METHOD
         // as we knew earlier fetch is the library that u need to use while fetching the data through the nodejs processess
-        // we do need to use fetch 
-        fetch("http://localhost:3000/todos",{
-            method:"GET"
+        // we do need to use fetch
+        
+        
+       // fetch("http://localhost:3000/todos",{
+       //     method:"GET"
+       // }).then(clbk)
+       // }
+
+
+       // THIS IS FOR THE POST METHOD
+       fetch("http://localhost:3000/todos",{
+            method:"POST",
+            body: JSON.stringify({
+                title:"cricket",
+                description:"Opening batting"
+            }),
+            headers:{
+                "Content-Type":"application/json"
+            }
         }).then(clbk)
     }
 </script>
