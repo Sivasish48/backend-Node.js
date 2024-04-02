@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>todo</title>
+</head>
+<script>
+
+
+
+       
+
+       function todocallbk(data){
+        // THIS IS FOR THE GET METHOD
+        console.log(data);
+       }
+
+
+       function callbk2(resp){
+        resp.json().then(todocallbk)
+       }
+     function getTodo(){
+        fetch("http://localhost:3006/todos",{
+           method:"GET"
+        }).then(callbk2)
+     }
+
+     getTodo()
+       
+    function onPress(){
+       // alert("Hi")
+
+       let title = document.getElementById("title").value 
+       let description =  document.getElementById("description").value    
+        console.log(title);
+
+      function parsedResponse(data){
+    console.log(data);
+     }
+
+        function clbk(response){
+            response.json().then(parsedResponse)
+        }
+
+        
+       // THIS IS FOR THE POST METHOD
+       fetch("http://localhost:3006/todos",{
+            method:"POST",
+            body: JSON.stringify({
+                title:title,
+                description:description
+            }),
+            headers:{
+                "Content-Type":"application/json"
+            }
+        }).then(clbk)
+    }
+</script>
+<body>
+    <h1>Todo Title</h1>
+    <input type="text" id="title"></input>
+    <h1>Todo Description</h1>
+    <input type="text" id="description"></input>
+    <button onclick="onPress()">Send Todo</button>
+</body>
+</html>
