@@ -9,11 +9,54 @@
 
 
 
-       
+       // for the delete
+
+
+       function deleteDone(){
+          console.log("delete is done");
+       }
+       function deleteTodo(id){
+        console.log(id);
+        fetch("http://localhost:3006/todos" +id ,{
+            method:"DELETE",
+            headers:{
+                "Content-Type":"application/json"
+            }
+        }).then(deleteDone)
+       }
 
        function todocallbk(data){
         // THIS IS FOR THE GET METHOD
         console.log(data);
+        let parentElement = document.getElementById("mainArea")
+        //parentElement.innerHTML = JSON.stringify(data)
+        
+
+        // now let us use a for loop to integrate all the data 
+
+        for(let i = 1; i<data.length;i++){
+
+              let childElement = document.createElement("div")
+
+              let grandChild1 = document.createElement("span")
+              grandChild1.innerHTML = data[i].title 
+
+              let grandChild2 = document.createElement("span")
+              grandChild2.innerHTML = data[i].description
+
+              let grandChild3 = document.createElement("button")
+              grandChild3.innerHTML = "Delete"
+
+               // now let us set up the functionality for our delete button
+               grandChild3.setAttribute("onClick","deleteTodo(" + data[i].id +")")
+
+              childElement.appendChild(grandChild1)
+              childElement.appendChild(grandChild2)
+              childElement.appendChild(grandChild3)
+
+            parentElement.appendChild(childElement)
+        }
+       
        }
 
 
@@ -36,7 +79,29 @@
         console.log(title);
 
       function parsedResponse(data){
-    console.log(data);
+         console.log(data);
+
+         
+         let parentElement = document.getElementById("mainArea")
+     let childElement = document.createElement("div")
+
+              let grandChild1 = document.createElement("span")
+              grandChild1.innerHTML = data.title 
+
+              let grandChild2 = document.createElement("span")
+              grandChild2.innerHTML = data.description
+
+              let grandChild3 = document.createElement("button")
+              grandChild3.innerHTML = "Delete"
+              
+
+             
+
+              childElement.appendChild(grandChild1)
+              childElement.appendChild(grandChild2)
+              childElement.appendChild(grandChild3)
+
+            parentElement.appendChild(childElement)
      }
 
         function clbk(response){
@@ -63,5 +128,8 @@
     <h1>Todo Description</h1>
     <input type="text" id="description"></input>
     <button onclick="onPress()">Send Todo</button>
+    <div id="mainArea">
+        hi there
+    </div>
 </body>
 </html>
