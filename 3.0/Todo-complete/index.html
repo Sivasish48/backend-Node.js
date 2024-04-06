@@ -12,9 +12,22 @@
        // for the delete
 
 
-       function deleteDone(){
-          console.log("delete is done");
-       }
+    //    function deleteDone(response){
+
+    //     if(response.ok){
+    //         let todosItem = document.getElementById("todo-"+id)
+    //           if(todosItem){
+    //            todosItem.remove()
+    //         }else {
+    //             console.log("Todo item not found in the DOM");
+    //         }
+    //     } else {
+    //         console.error("Failed to delete todo item:", response.statusText);
+    //     }
+    //     }
+          
+         
+       
        function deleteTodo(id){
         console.log(id);
         fetch("http://localhost:3006/todos" +id ,{
