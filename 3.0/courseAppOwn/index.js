@@ -35,5 +35,39 @@ let COURSE = []
 
     // these syntax stores the value of username and the password from the header of the admin 
 
-    
+    // let create a syntax where it  is responsible for verifying if a user attempting to access a resource has admin privileges
+
+    const admin = ADMINS.find((a)=>(a.username===username && a.password===password))
+    //  This part defines a callback function used for filtering the ADMINS array. It iterates through each admin object (a) and checks two conditions:
+
+    if (admin){
+        next()
+    }else{
+        res.status(403).json({message: "The admin aunthentication is failed "})
+    }
  }
+
+ // now let us create a middleware function for the user aunthentication
+ // It kind of runs with the same logic but instead of Admin array we provide the USERS array here
+
+
+
+ // next: This is a callback function that allows the middleware to pass control to the next middleware function in the chain or the actual route handler function.
+
+   function userAunthentication (req,res,next){
+    const { username, password } = req.headers;
+
+    const user = USERS.find((u)=>(u.username===username && u.password===password))
+
+
+    //req.user = user;: This line attaches the found user object to the req object under the property name user. This allows subsequent middleware functions or the actual route handler to access the authenticated user's information.
+
+    if (user){
+        req.user = user
+        next()
+    }else{
+        res.status(403).json({message: "The user aunthentication is failed "})
+    }
+   }
+ 
+ 
