@@ -205,6 +205,42 @@ let COURSE = []
 
 
 
+   // now create route and its functionality to show the user all the published courses
+
+   app.get("/user/courses", userAunthentication , (req,res)=>{
+    // let store the filtered courses in an array
+    let filteredCourses = []
+
+    // now create a loop to filter the published courses
+    for(let i =1;i<COURSE.length;i++){
+        if(COURSE[i].published){
+            filteredCourses.push(COURSE[i])
+        }
+    }
+    res.json({course:filteredCourses})
+   })
+
+
+
+
+   // now let us create an api handler route for purchasing purpose
+
+   app.post("/user/courses/:courseId", userAunthentication , (req,req)=>{
+      let courseId = Number(req.params.courseId)
+
+      // now build the logic that the selected courseId exists and published
+
+      let course = COURSE.find((c)=>(c.id === courseId && c.published))
+
+      if(course){
+        req.body.user.purchasedCourse.push(courseId);
+        res.join({message:"Course purchased successfully"})
+      }else{
+        res.status(404).json({message:"Course not found or not available"})
+      }
+   } )
+
+
 
 
 
