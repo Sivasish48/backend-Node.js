@@ -7,7 +7,7 @@ app.use(express.json())
 
 
 
-const port = 3001
+const port = 3000
 
 // as we know we have have two pages minimun that is a page for user and a page for admin
 
@@ -27,7 +27,7 @@ let COURSE = []
  function adminAuthentication (req,res,next){
     
 
-    const { username, password } = req.headers;
+    const { username, password } = req.body;
     // the above line is equal to write the below lines of code
   
     //  const username = req.headers.username
@@ -83,7 +83,7 @@ let COURSE = []
     // retrieve the admin data from the header and store it in a variable
 
     const admin = req.body
-
+    console.log(req.body);
     const existingAdmin = ADMINS.find((a)=>(a.username === admin.username))
 
     // now put on the conditional rendering here
@@ -225,7 +225,7 @@ let COURSE = []
 
    // now let us create an api handler route for purchasing purpose
 
-   app.post("/user/courses/:courseId", userAunthentication , (req,req)=>{
+   app.post("/user/courses/:courseId", userAunthentication , (req,res)=>{
       let courseId = Number(req.params.courseId)
 
       // now build the logic that the selected courseId exists and published
@@ -242,8 +242,30 @@ let COURSE = []
 
 
 
+   // now create a route to show the user his/her purchasedCourses
+
+
+   app.get("/users/purchasedCourses", userAunthentication , (res,req)=>{
+
+      // include all the courses that is purchased using filtering
+
+      let purchasedCourse = COURSE.filter((c)=> req.user.purchasedCourse.include(c.id))
+
+      // then display those 
+      res.json({purchasedCourse})
+   })
+
+
+    
+app.get("/admins",(req,res)=>{
+    res.json({ADMINS})
+})
+
+   app.listen(port,()=>{
+    console.log(`Server is listening at ${port}`);
+   })
 
 
 
- 
+
  
