@@ -142,7 +142,7 @@ let COURSE = []
 
     // let us store the course Id from the querry params and convert it into a number (it might be a string)
        let courseId = parseInt(req.params.courseId)
-
+       
        // now let us store the logic in a variable of whether the given course id exists or not
        let course = COURSE.find((c)=>( c.id === courseId ))
 
@@ -168,6 +168,7 @@ let COURSE = []
    // now let us make a route and functionality to display all the existing courses to the admin by a GET method
 
    app.get("/admin/courses",adminAuthentication,(req,res)=>{
+    console.log(req.body.courseId);
 
     res.json({courses:COURSE})
    })
