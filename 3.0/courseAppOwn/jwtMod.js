@@ -76,17 +76,17 @@ app.post("/admin/signup", (req,res)=>{
    } else{
    ADMINS.push(admin)
   const token =  generateJwt(admin)    // generates a JSON Web Token (JWT) for the newly created admin.
-  res.json({message:"The admin created successfuly"})
+  res.json({message:"The admin created successfuly",token})
    }
 })
 
-app.post("/admin/login", (res,req)=>{
-   const { username, password } = req.headers;
+app.post("/admin/login", (req,res)=>{
+   const { username, password } = req.header;
    const admin = ADMINS.find(a => a.username === username && a.password === password);
  
      if(admin){
       const token = generateJwt(admin)
-      res.json({message:"logged in successfuly"})
+      res.json({message:"logged in successfuly",token})
      }
 })
 
@@ -143,6 +143,10 @@ app.post("/admin/courses", adminAuthJWT , (req,res)=>{
   app.get('/admin/courses', adminAuthJWT, (req, res) => {
    res.json({ courses: COURSES });
  });
+
+ app.listen(port,()=>{
+   console.log(`Server is listening at ${port}`);
+  })
 
 
 
