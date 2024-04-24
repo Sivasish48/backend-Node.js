@@ -97,3 +97,69 @@ const authenticateJwt = (req, res, next) => {
   // now do the connection with mongo db
 
   mongoose.connect('mongodb+srv://sivasish48:suvamdbdb@cluster1.a4rumgr.mongodb.net/') 
+
+
+  // now let us define routes for Admin 
+  // for signup
+
+  app.post("/admin/signup", async (req,res)=>{
+    // These lines extract the username and password from the request body.
+    const username = req.body.username
+    const password = req.body.password
+
+    // This line uses the Admin model to search for an existing admin user with the same username.
+    const admin = await Admin.findOne({username})
+
+    if(admin){
+      res.status(403).json({message:`Admin already exists.`})
+    }else{
+
+      // This line creates an object containing the retrieved username and password to be used for the new admin user.
+      const userObj = {
+        username:username,
+        password:password
+      }
+
+      // This line creates a new instance of the Admin model using the userObj as data.
+      const newAdmin  = new Admin(userObj)
+
+      // This line saves the new admin user to the database. await is used because newAdmin.save likely returns a Promise.
+      await newAdmin.save()
+     
+
+      // It creates a token containing the username and sets the role to "admin".
+      const token = jwt.sign({username,role:"admin"},secret,{expiresIn:"1h"})
+      res.json({message:`Admin created successfully ${token}`})
+    }
+  })
+
+
+  // now let us define routes for the logging of the admin
+
+  app.post("/admin/login", async (req,res)=>{
+    const {username,password} = req.header
+
+    // let us store if the admin exists
+    const admin = await Admin.findOne({username,password})
+
+    if(admin){
+      const token = jwt.sign({username,role:"admin"},secret,{expiresIn:'1hr'})
+      res.json({message:`LoggedIn successfully, ${token}`})
+
+    }else{
+      res.json({message:`Invalod username or password`})
+    }
+  })
+
+
+  // now let us define routes to create courses
+
+  app.post("/admin/courses", authenticateJwt, async (req,res)=>{
+    
+    const course =  new Course({
+      title:req.body.title,
+      description:req.body.description
+    })
+    await course.save()
+    res.json({message:`Course created successfully , course ID is : ${course.id} ` })
+  })
