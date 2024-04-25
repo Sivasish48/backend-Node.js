@@ -163,3 +163,30 @@ const authenticateJwt = (req, res, next) => {
     await course.save()
     res.json({message:`Course created successfully , course ID is : ${course.id} ` })
   })
+
+
+  // now let us create routes to edit an existing course
+
+  app.put("/admin/course/:courseId",authenticateJwt, async(req,res)=>{
+    const course = await Course.findByIdAndUpdate(req.params.courseId,req.body)
+    /* Course.findByIdAndUpdate(req.params.courseId, req.body) is likely a function (from a Mongoose) that retrieves a course document from the database based on the provided courseId.
+       The req.body object contains the new course data sent in the request body (usually in JSON format).
+       findByIdAndUpdate attempts to find the course and update its properties with the values from req.body. It returns the updated course document if successful, or null if not found.
+       The await keyword pauses the execution of the route handler until findByIdAndUpdate finishes its operation.
+*/
+    if(course){
+      res.json({message:`course edited successfullyy`})
+    }else{
+      res.statusCode(403).json({message:`Course not found`})
+    }
+  })
+
+
+  // let us create a route to get all the courses
+
+  app.get("/admin/courses",authenticateJwt, async (req,res)=>{
+    const course = await Course.find({})
+    // The empty {} object as an argument specifies no filtering criteria, meaning all courses are returned.
+     // The await keyword pauses the execution of the route handler until Course.find finishes its operation.
+    res.json({course})
+  })
