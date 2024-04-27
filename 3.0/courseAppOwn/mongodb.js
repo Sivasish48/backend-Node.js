@@ -190,3 +190,42 @@ const authenticateJwt = (req, res, next) => {
      // The await keyword pauses the execution of the route handler until Course.find finishes its operation.
     res.json({course})
   })
+
+
+  // ok let us make routes for the userm signin
+
+  app.post("/user/signup", async(req,res)=>{
+
+    const username = {
+      username:username,
+      password:password
+    }
+
+    const user = await User.findOne({username})
+    if (user){
+      res.json({message:`User already exists`})
+    }else{
+      const newUser = new User({username,password})
+      await newUser.save()
+      const token = jwt.sign({username,role:user},secret,{expiresIn:"1h"})
+      res.json({message:`New user created successfuly, ${token}`})
+    }
+  })
+
+  // now create routes on user login
+
+  app.post("/user/login", async(req,res)=>{
+
+    const {username,password} = req.header
+    const user = await User.findOne({username,password})
+    
+    if(user){
+      const token = jwt.sign({username,role:user},secret,{expiresIn:"1h"})
+      res.json({message:`New user created successfuly, ${token}`})
+    }else{
+      res.json({message:"Invalid username or password"})
+    }
+  })
+
+
+// now let us define routes to purchase the course
