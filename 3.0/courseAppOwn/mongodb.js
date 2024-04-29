@@ -26,7 +26,7 @@ const mongoose = require("mongoose")
 
 app.use(express.json())
 
-const secret = "eoijvciweuvneiurw"
+const secret = "1234kjl"
 
 
 // In MongoDB, a schema is a structure that defines the shape or format of documents within a collection.
@@ -43,7 +43,7 @@ const adminSchema = new mongoose.Schema({
 // let us define the schema for user db
 
 const userSchema = new mongoose.Schema({
-    userename:{type: String},
+    username:{type: String},
     password:{type:String},
     purchasedCourse:[{
          type:mongoose.Schema.Types.ObjectId,
@@ -96,7 +96,7 @@ const authenticateJwt = (req, res, next) => {
 
   // now do the connection with mongo db
 
-  mongoose.connect('mongodb+srv://sivasish48:suvamdbdb@cluster1.a4rumgr.mongodb.net/') 
+  mongoose.connect('mongodb+srv://sivasish48:v72rWU978FZaTgYb@cluster0.mub0nvw.mongodb.net/courses') 
 
 
   // now let us define routes for Admin 
@@ -229,3 +229,46 @@ const authenticateJwt = (req, res, next) => {
 
 
 // now let us define routes to purchase the course
+
+app.post("/users/courses/:courseId",authenticateJwt, async (req,res)=>{
+  const course = await Course.findById(req.params.courseId)
+  console.log(course);
+  if(course){
+    const user = await User.findOne(req.user.userename)
+
+    if(user){
+      user.purchasedCourse.push(course)
+      await user.save()
+      res.json({message:`Course purchased successfully`})
+      
+    }else{
+      res.status(403).json({message: ` User not found`})
+    }
+  }else{
+    res.status(403).json({message:`Course not found`})
+  }
+})
+
+// let us make routes to show the user his/her purchased course
+
+app.get("/user/purchasedCourses",authenticateJwt, async (req,res)=>{
+   
+  const user = await User.findOne({username:req.user.username}).populate('purchasedCourse')
+  // here .findOne({username: req.user.username}): This calls the findOne method on the User model. It searches for a single user document where the username field matches the value of req.user.username.
+  // .populate('purchasedCourse'): This method is specific to Mongoose and performs population. It fetches the data referenced by the purchasedCourse field (assuming it's an object id referencing another collection) in the user document and includes it in the final result.
+
+  if(user){
+    res.json({purchasedCourse: user.purchasedCourse || []})
+  }else{
+    res.status(403).json({message:`User not found`})
+  }
+  // If user.purchasedCourse exists and has a value (truthy), that value is used.
+  // If user.purchasedCourse is missing or falsy (e.g., null or empty array), an empty array [] is used as the default value. This ensures a purchasedCourse property is always present in the response even if the user hasn't purchased any courses.
+  
+})
+
+
+
+app.listen(3000,()=>{
+  console.log(`server is listening`);
+})
