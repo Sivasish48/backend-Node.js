@@ -96,7 +96,7 @@ const authenticateJwt = (req, res, next) => {
 
   // now do the connection with mongo db
 
-  mongoose.connect('mongodb+srv://sivasish48:v72rWU978FZaTgYb@cluster0.mub0nvw.mongodb.net/courses') 
+  mongoose.connect('mongodb+srv://sivasish48:m9N6RKRw6mpx3QTZ@cluster2.x9lc2by.mongodb.net/courses') 
 
 
   // now let us define routes for Admin 

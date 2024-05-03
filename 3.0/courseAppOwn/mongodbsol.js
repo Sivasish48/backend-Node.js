@@ -50,7 +50,7 @@ const authenticateJwt = (req, res, next) => {
 
 // Connect to MongoDB
 // DONT MISUSE THIS THANKYOU!!
-mongoose.connect('mongodb+srv://sivasish48:suvamdbdb@cluster1.a4rumgr.mongodb.net/courses');
+mongoose.connect('mongodb+srv://sivasish48:m9N6RKRw6mpx3QTZ@cluster2.x9lc2by.mongodb.net/courses');
 
 app.post('/admin/signup', (req, res) => {
   const { username, password } = req.body;
@@ -156,4 +156,4 @@ app.get('/users/purchasedCourses', authenticateJwt, async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+app.listen(3001, () => console.log('Server running on port 3001'));
